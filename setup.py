@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import pip
 import os
 from setuptools import find_packages, setup
 
@@ -20,8 +19,8 @@ setup(name='django-docker',
       author='Antonio Sanchez',
       author_email='asanchez@plutec.net',
       license='Apache Version 2',
-      url='',
-      download_url='',
+      url='https://github.com/plutec/django-docker',
+      download_url='https://github.com/plutec/django-docker/archive/master.zip',
       keywords=['docker', 'docker-ce', 'django', 'apache2', 'wsgi', 'gunicorn', 'nginx'],
       install_requires=[]
       )
