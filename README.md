@@ -20,3 +20,21 @@ pip install django-docker
 4. Run `python manage.py docker_all` to create the Dockerfile, create the image and run it (all-in-one)
 
 5. Visit http://127.0.0.1:9090/admin/ to check all is working correctly.
+
+
+# Django version supported
+
+Tested with django 1.11, others under study/development.
+
+# Web server
+Apache2 supported, nginx under development
+
+# App server
+WSGI supported, gunicorn under development
+
+# TODO List
+[] Nginx
+[] Gunicorn
+[] SSL
+[] Database configuration
+[] Support for Django 2.x / python3
