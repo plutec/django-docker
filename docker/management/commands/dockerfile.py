@@ -12,7 +12,7 @@ class Command(BaseCommand):
     #    parser.add_argument('poll_id', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        DOCKER_FILES_DIR = os.path.join(settings.BASE_DIR, 'docker_files')
+        DOCKER_FILES_DIR = os.path.join(settings.BASE_DIR, '../', 'docker_files')
         """
         for poll_id in options['poll_id']:
             try:
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         """
         
         templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../templates/')
-        print(templates_dir)
+        #print(templates_dir)
         #self.stdout.write('Site name? This will be use for all configurations and installation routes')
         project_name = settings.BASE_DIR.split('/')[-1]
         site_name = self.manage_input("Site name? This will be use for all configurations and installation routes", [project_name], project_name)
@@ -60,7 +60,15 @@ class Command(BaseCommand):
             #print(rendered)
             with open(os.path.join(DOCKER_FILES_DIR, 'Dockerfile'), 'wt') as fd:
                 fd.write(rendered)
+            print('\033[92m'+ '[*] Dockerfile written in {}\033[0m'.format(DOCKER_FILES_DIR))
 
+            
+            with open(os.path.join(templates_dir, 'sites-apache2-nossl.tpl'), 'rt') as fd:
+                template = Template(fd.read())
+            rendered = template.render(Context({'appname': site_name, 'domain': 'domain'}))
+            with open(os.path.join(DOCKER_FILES_DIR, '{}-nossl.conf'.format(site_name)), 'wt') as fd:
+                fd.write(rendered)
+            print('\033[92m'+ '[*] Apache2 configuration file in {}/{}-nossl.conf\033[0m'.format(DOCKER_FILES_DIR, site_name))
     
     def manage_input(self, sentence, choices_list, default_choice=None):
         choices = '('

@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED 1
 MAINTAINER Antonio Sanchez <asanchez@plutec.net> version: 0.1
 
 RUN apt-get update && apt-get install -y apache2 libapache2-mod-wsgi python-pip && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
@@ -21,7 +22,7 @@ WORKDIR /var/www/{{site_name}}
 COPY . /var/www/{{site_name}}/
 RUN pip install -r requirements.txt
 
-COPY {{site_name}}-nossl.conf /etc/apache2/sites-available/
+COPY docker_files/{{site_name}}-nossl.conf /etc/apache2/sites-available/
 RUN a2ensite {{site_name}}-nossl.conf
 RUN a2dissite 000-default.conf
 RUN python manage.py collectstatic --noinput

@@ -16,11 +16,12 @@ class Command(BaseCommand):
 
     def launch(self, name):
         
-        output = subprocess.Popen(["docker", "build", "-f", os.path.join(settings.BASE_DIR, 'docker_files', 'Dockerfile'), 
+        output = subprocess.Popen(["docker", "build", "-f", os.path.join('docker_files', 'Dockerfile'), 
                                    "-t", name, "."], stdout=subprocess.PIPE)
         out, err = output.communicate()
-        print(self.style.SUCCESS(out))
-        print(self.style.ERROR(err))
+        print('\033[92m{}'.format(out))
+        if err != None:
+            print('\033[91m{}'.format(err))
 
     
     def manage_input(self, sentence, choices_list, default_choice=None):

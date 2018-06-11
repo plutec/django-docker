@@ -13,14 +13,16 @@ class Command(BaseCommand):
     #    parser.add_argument('poll_id', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        DOCKER_FILES_DIR = os.path.join(settings.BASE_DIR, 'docker_files')
-        self.launch()
+        project_name = settings.BASE_DIR.split('/')[-1]
+        site_name = self.manage_input("Site name? This will be use for all configurations and installation routes", [project_name], project_name)
+        self.stdout.write('Building docker image with name: {}'.format(site_name))
+        self.launch(site_name)
 
-    def launch(self):
+    def launch(self, name):
         #docker run -p 9090:80 mysite
-        output = subprocess.Popen(["docker", "run", "-p", "9090:80", "mysite"], stdout=subprocess.PIPE)
-        out, err = output.communicate()
         self.stdout.write("Server will run in http://127.0.0.1:9090")
+        output = subprocess.Popen(["docker", "run", "-p", "9090:80", name], stdout=subprocess.PIPE)
+        out, err = output.communicate()
         self.stdout.write(self.style.SUCCESS(out))
         self.stdout.write(self.style.ERROR(err))
         
